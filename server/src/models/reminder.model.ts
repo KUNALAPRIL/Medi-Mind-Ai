@@ -1,4 +1,22 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
+
+export interface IMedicineReminder extends Document {
+  patientId: Types.ObjectId;
+  medicineName: string;
+  dosage: string;
+  times: string[];
+  startDate: Date;
+  endDate: Date;
+  isActive: boolean;
+}
+
+export interface IMedicationLog extends Document {
+  reminderId: Types.ObjectId;
+  patientId: Types.ObjectId;
+  scheduledTime: Date;
+  status: 'PENDING' | 'TAKEN' | 'MISSED';
+  takenTime?: Date;
+}
 
 const medicineReminderSchema = new Schema(
   {
@@ -31,5 +49,5 @@ const medicationLogSchema = new Schema(
 // Indexing for quick analytics aggregations
 medicationLogSchema.index({ patientId: 1, scheduledTime: -1 });
 
-export const MedicineReminder = model('MedicineReminder', medicineReminderSchema);
-export const MedicationLog = model('MedicationLog', medicationLogSchema);
+export const MedicineReminder = model<IMedicineReminder>('MedicineReminder', medicineReminderSchema);
+export const MedicationLog = model<IMedicationLog>('MedicationLog', medicationLogSchema);

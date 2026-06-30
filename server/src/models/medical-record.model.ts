@@ -1,4 +1,24 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
+
+export interface IBiomarker {
+  name: string;
+  value: number;
+  unit: string;
+  referenceRange?: string;
+  status: 'NORMAL' | 'HIGH' | 'LOW';
+}
+
+export interface IMedicalRecord extends Document {
+  patientId: Types.ObjectId;
+  originalFileName: string;
+  fileUrl: string;
+  extractedData: {
+    biomarkers: IBiomarker[];
+    rawText?: string;
+  };
+  aiAnalysisSummary?: string;
+  parsedAt: Date;
+}
 
 const biomarkerSchema = new Schema({
   name: { type: String, required: true },
@@ -23,5 +43,5 @@ const medicalRecordSchema = new Schema(
   { timestamps: true }
 );
 
-export const MedicalRecord = model('MedicalRecord', medicalRecordSchema);
+export const MedicalRecord = model<IMedicalRecord>('MedicalRecord', medicalRecordSchema);
 export default MedicalRecord;

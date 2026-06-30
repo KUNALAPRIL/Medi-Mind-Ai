@@ -1,4 +1,21 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
+
+export interface IPrescribedMedicine {
+  name: string;
+  dosage: string;
+  frequency: string;
+}
+
+export interface IPrescription extends Document {
+  patientId: Types.ObjectId;
+  originalFileName: string;
+  fileUrl: string;
+  doctorName?: string;
+  hospitalName?: string;
+  prescriptionDate?: Date;
+  medicines: IPrescribedMedicine[];
+  status: 'PENDING_VERIFICATION' | 'VERIFIED';
+}
 
 const prescribedMedicineSchema = new Schema({
   name: { type: String, required: true },
@@ -24,5 +41,5 @@ const prescriptionSchema = new Schema(
   { timestamps: true }
 );
 
-export const Prescription = model('Prescription', prescriptionSchema);
+export const Prescription = model<IPrescription>('Prescription', prescriptionSchema);
 export default Prescription;

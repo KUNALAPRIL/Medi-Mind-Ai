@@ -1,4 +1,11 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
+
+export interface IToken extends Document {
+  userId: Types.ObjectId;
+  token: string;
+  type: 'REFRESH' | 'VERIFICATION' | 'PASSWORD_RESET';
+  expiresAt: Date;
+}
 
 const tokenSchema = new Schema(
   {
@@ -27,5 +34,5 @@ const tokenSchema = new Schema(
   }
 );
 
-export const Token = model('Token', tokenSchema);
+export const Token = model<IToken>('Token', tokenSchema);
 export default Token;

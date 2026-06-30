@@ -1,4 +1,19 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
+
+export interface IChatSession extends Document {
+  patientId: Types.ObjectId;
+  title: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IChatMessage extends Document {
+  sessionId: Types.ObjectId;
+  sender: 'user' | 'model';
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 const chatSessionSchema = new Schema(
   {
@@ -19,5 +34,5 @@ const chatMessageSchema = new Schema(
 
 chatMessageSchema.index({ sessionId: 1, createdAt: 1 });
 
-export const ChatSession = model('ChatSession', chatSessionSchema);
-export const ChatMessage = model('ChatMessage', chatMessageSchema);
+export const ChatSession = model<IChatSession>('ChatSession', chatSessionSchema);
+export const ChatMessage = model<IChatMessage>('ChatMessage', chatMessageSchema);
