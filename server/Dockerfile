@@ -12,7 +12,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 RUN addgroup -g 1001 -S nodejs && adduser -S nestjs -u 1001
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 COPY --from=builder /app/dist ./dist
 USER nestjs
 EXPOSE 5000
