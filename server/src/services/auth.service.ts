@@ -36,10 +36,16 @@ export class AuthService {
       password,
       role,
       verificationToken,
+      isVerified: true, // Auto-verify for easy demo and phone testing
     });
 
     await user.save();
-    await emailService.sendVerificationEmail(email, verificationToken);
+    
+    try {
+      await emailService.sendVerificationEmail(email, verificationToken);
+    } catch (err) {
+      // SMTP not configured or failed - catch gracefully so registration succeeds
+    }
 
     return {
       userId: user._id.toString(),
