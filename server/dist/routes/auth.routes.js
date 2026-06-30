@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.authRouter = void 0;
+const express_1 = require("express");
+const auth_controller_1 = __importDefault(require("../controllers/auth.controller"));
+const validate_middleware_1 = __importDefault(require("../middlewares/validate.middleware"));
+const auth_middleware_1 = require("../middlewares/auth.middleware");
+const auth_validator_1 = require("../validators/auth.validator");
+exports.authRouter = (0, express_1.Router)();
+exports.authRouter.post('/register', (0, validate_middleware_1.default)(auth_validator_1.registerSchema), auth_controller_1.default.register);
+exports.authRouter.post('/login', (0, validate_middleware_1.default)(auth_validator_1.loginSchema), auth_controller_1.default.login);
+exports.authRouter.post('/verify-email', (0, validate_middleware_1.default)(auth_validator_1.verifyEmailSchema), auth_controller_1.default.verifyEmail);
+exports.authRouter.post('/forgot-password', (0, validate_middleware_1.default)(auth_validator_1.forgotPasswordSchema), auth_controller_1.default.forgotPassword);
+exports.authRouter.post('/reset-password', (0, validate_middleware_1.default)(auth_validator_1.resetPasswordSchema), auth_controller_1.default.resetPassword);
+exports.authRouter.post('/refresh', auth_controller_1.default.refresh);
+exports.authRouter.post('/google', (0, validate_middleware_1.default)(auth_validator_1.googleAuthSchema), auth_controller_1.default.googleLogin);
+exports.authRouter.post('/logout', auth_controller_1.default.logout);
+exports.authRouter.post('/seed-demo', auth_middleware_1.authenticate, auth_controller_1.default.seedDemo);
+exports.default = exports.authRouter;

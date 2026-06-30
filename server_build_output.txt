@@ -1,0 +1,6 @@
+Starting compilation check... 
+
+> medimind-api@1.0.0 build
+> tsc
+
+Done 
